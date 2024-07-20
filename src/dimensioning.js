@@ -1,5 +1,5 @@
 import * as go from 'gojs';
-// Define the DimensioningLink class
+
 export default class DimensioningLink extends go.Link {
   constructor(init) {
     super();
