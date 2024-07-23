@@ -194,6 +194,9 @@
 
 // export default Palette;
 
+
+
+//Palette.jsx
 import React from "react";
 import { ReactPalette } from "gojs-react";
 import * as go from "gojs";
@@ -201,7 +204,9 @@ import * as go from "gojs";
 function initPalette() {
   const $ = go.GraphObject.make;
 
-  const myPalette = $(go.Palette, {
+  const myPalette = $(go.Palette,
+     {
+      allowZoom: false,
     layout: $(go.GridLayout, { wrappingColumn: 1, alignment: go.GridLayout.Position })
   });
 
@@ -552,6 +557,58 @@ myPalette.nodeTemplateMap.add("Rectangle4",
                 
               }
           ),
+          $(go.Shape, "Rectangle", 
+            { 
+              width: 0, 
+              height: 6, 
+              fill: "Transparent", 
+              stroke: "black", 
+              strokeWidth: 1, 
+              margin: new go.Margin(32, 24.5, 5, 0), 
+              alignment: go.Spot.Right,
+              angle: 55
+            },
+            new go.Binding("stroke", "color")
+          ),
+          $(go.Shape, "Rectangle", 
+            { 
+              width: 0, 
+              height: 6, 
+              fill: "Transparent", 
+              stroke: "black", 
+              strokeWidth: 1, 
+              margin: new go.Margin(32, 29, 5, 0), 
+              alignment: go.Spot.Right,
+              angle: -55
+            },
+            new go.Binding("stroke", "color")
+          ),
+          $(go.Shape, "Rectangle", 
+            { 
+              width: 0, 
+              height: 6, 
+              fill: "Transparent", 
+              stroke: "black", 
+              strokeWidth: 1, 
+              margin: new go.Margin(38, 24.5, 5, 0), 
+              alignment: go.Spot.Right,
+              angle: 55
+            },
+            new go.Binding("stroke", "color")
+          ),
+          $(go.Shape, "Rectangle", 
+            { 
+              width: 0, 
+              height: 6, 
+              fill: "Transparent", 
+              stroke: "black", 
+              strokeWidth: 1, 
+              margin: new go.Margin(38, 29, 5, 0), 
+              alignment: go.Spot.Right,
+              angle: -55
+            },
+            new go.Binding("stroke", "color")
+          ),
             )
           )
         );
@@ -568,7 +625,7 @@ myPalette.nodeTemplateMap.add("Rectangle4",
                   fill: "Black", 
                   stroke: "black", 
                   strokeWidth: 1, 
-                  margin: new go.Margin(0, 35, 10, 0), 
+                  margin: new go.Margin(12, 35, 10, 0), 
                   alignment: go.Spot.Right 
                 },
                 new go.Binding("stroke", "color")
@@ -580,7 +637,7 @@ myPalette.nodeTemplateMap.add("Rectangle4",
                   fill: "Black", 
                   stroke: "black", 
                   strokeWidth: 1, 
-                  margin: new go.Margin(0, 30, 10, 0), 
+                  margin: new go.Margin(12, 30, 10, 0), 
                   alignment: go.Spot.Right 
                 },
                 new go.Binding("stroke", "color")
@@ -592,7 +649,7 @@ myPalette.nodeTemplateMap.add("Rectangle4",
                   fill: "Transparent", 
                   stroke: "black", 
                   strokeWidth: 1, 
-                  margin: new go.Margin(0, 25, 10, 0), 
+                  margin: new go.Margin(12, 25, 10, 0), 
                   alignment: go.Spot.Right 
                 },
                 new go.Binding("stroke", "color")
@@ -604,7 +661,7 @@ myPalette.nodeTemplateMap.add("Rectangle4",
                   fill: "Black", 
                   stroke: "black", 
                   strokeWidth: 1, 
-                  margin: new go.Margin(0, 20, 10, 0), 
+                  margin: new go.Margin(12, 20, 10, 0), 
                   alignment: go.Spot.Right 
                 },
                 new go.Binding("stroke", "color")
@@ -617,86 +674,295 @@ myPalette.nodeTemplateMap.add("Rectangle4",
                 $(go.Panel, "Auto",
                   { width: 320, height: 60, margin: new go.Margin(2) },
                   $(go.Shape, "RoundedRectangle", { fill: "lightyellow", strokeWidth: 0, spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight, parameter1: 10 }),
-                  $(go.TextBlock, "Compartment", { margin: new go.Margin(0, 0, 0, 10), alignment: go.Spot.Left }),
-                  $(go.Shape, "Square", 
+                  $(go.TextBlock, "Horizontal Busbar", { margin: new go.Margin(0, 0, 0, 10), alignment: go.Spot.Left }),
+                  $(go.Shape, "Rectangle", 
                     { 
-                      width: 40, 
-                      height: 40, 
+                      height: 1, 
+                      width: 35, 
+                      fill: "Black", 
+                      stroke: "black", 
+                      strokeWidth: 1, 
+                      margin: new go.Margin(5, 35, 10, 297), 
+                      // alignment: go.Spot.Right 
+                    },
+                    new go.Binding("stroke", "color")
+                  ),
+                  $(go.Shape, "Rectangle", 
+                    { 
+                      height: 1, 
+                      width:35, 
+                      fill: "Black", 
+                      stroke: "black", 
+                      strokeWidth: 1, 
+                      margin: new go.Margin(15, 30, 10, 292), 
+                      // alignment: go.Spot.Right 
+                    },
+                    new go.Binding("stroke", "color")
+                  ),
+                  $(go.Shape, "Rectangle", 
+                    { 
+                      height: 0, 
+                      width: 35, 
                       fill: "Transparent", 
                       stroke: "black", 
                       strokeWidth: 1, 
-                      margin: new go.Margin(0, 2, 0, 0), 
-                      alignment: go.Spot.Right 
+                      margin: new go.Margin(25, 25, 10, 287), 
+                      // alignment: go.Spot.Right 
+                    },
+                    new go.Binding("stroke", "color")
+                  ),
+                  $(go.Shape, "Rectangle", 
+                    { 
+                      height: 1, 
+                      width: 35, 
+                      fill: "Black", 
+                      stroke: "black", 
+                      strokeWidth: 1, 
+                      margin: new go.Margin(35, 20, 10, 282), 
+                      // alignment: go.Spot.Right 
                     },
                     new go.Binding("stroke", "color")
                   ),
                 )))
-  // myPalette.nodeTemplateMap.add("Circle",
-  //   $(go.Node, "Vertical",
-  //     $(go.Panel, "Auto",
-  //       { width: 320, height: 60, margin: new go.Margin(2) },
-  //       $(go.Shape, "RoundedRectangle", { fill: "lightyellow", strokeWidth: 0, spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight, parameter1: 10 }),
-  //       $(go.TextBlock, "Circle", { margin: new go.Margin(0, 0, 0, 10), alignment: go.Spot.Left }),
-  //       $(go.Shape, "Circle", { width: 30, height: 30, fill: "lightblue", margin: new go.Margin(0, 10, 0, 0), alignment: go.Spot.Right })
-  //     )
-  //   )
-  // );
+  
+                myPalette.nodeTemplateMap.add("Rectangle7",
+                  $(go.Node, "Vertical",
+                    $(go.Panel, "Auto",
+                      { width: 320, height: 60, margin: new go.Margin(2) },
+                      $(go.Shape, "RoundedRectangle", { fill: "lightyellow", strokeWidth: 0, spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight, parameter1: 10 }),
+                      $(go.TextBlock, "Vertical Sepration", { margin: new go.Margin(0, 0, 0, 10), alignment: go.Spot.Left }),
+                      $(go.Shape, "Rectangle", 
+                        { 
+                          width: 30, 
+                          height: 40, 
+                          fill: "Transparent", 
+                          stroke: "black", 
+                          strokeWidth: 1, 
+                          margin: new go.Margin(0, 10, 0, 0), 
+                          alignment: go.Spot.Right 
+                        },
+                        new go.Binding("stroke", "color")
+                      ),
+                      $(go.Shape, "Rectangle", 
+                        { 
+                          width: 2, 
+                          height: 4, 
+                          fill: "black", 
+                          margin: new go.Margin(0, 0, 0, 303), 
+                          // alignment: go.Spot.Center 
+                        }
+                      ),
+                      $(go.Shape, "Rectangle", 
+                        { 
+                          width: 2, 
+                          height: 4, 
+                          fill: "black", 
+                          margin: new go.Margin(0, 0, 0, 234.9), 
+                          // alignment: go.Spot.Center 
+                        }
+                      ),
+                      $(go.Shape, "Rectangle", 
+                        { 
+                          width: 2, 
+                          height: 4, 
+                          fill: "black", 
+                          margin: new go.Margin(0, 0, 36, 303), 
+                          // alignment: go.Spot.Center 
+                        }
+                      ),
+                      $(go.Shape, "Rectangle", 
+                        { 
+                          width: 2, 
+                          height: 4, 
+                          fill: "black", 
+                          margin: new go.Margin(0, 0, 36, 234.9), 
+                          // alignment: go.Spot.Center 
+                        }
+                      ),
+                      $(go.Shape, "Rectangle", 
+                        { 
+                          width: 2, 
+                          height: 4, 
+                          fill: "black", 
+                          margin: new go.Margin(36, 0, 0, 234.9), 
+                          // alignment: go.Spot.Center 
+                        }
+                      ),
+                      $(go.Shape, "Rectangle", 
+                        { 
+                          width: 2, 
+                          height: 4, 
+                          fill: "black", 
+                          margin: new go.Margin(36, 0, 0, 303), 
+                          // alignment: go.Spot.Center 
+                        }
+                      ),
+                    )
+                  )
+                );
 
-  // myPalette.nodeTemplateMap.add("Rectangle",
-  //   $(go.Node, "Vertical",
-  //     $(go.Panel, "Auto",
-  //       { width: 320, height: 60, margin: new go.Margin(2) },
-  //       $(go.Shape, "RoundedRectangle", { fill: "lightyellow", strokeWidth: 0, spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight, parameter1: 10 }),
-  //       $(go.TextBlock, "Rectangle", { margin: new go.Margin(0, 0, 0, 10), alignment: go.Spot.Left }),
-  //       $(go.Shape, "Rectangle", { width: 45, height: 30, fill: "grey", margin: new go.Margin(0, 10, 0, 0), alignment: go.Spot.Right })
-  //     )
-  //   )
-  // );
 
-  // myPalette.nodeTemplateMap.add("Square",
-  //   $(go.Node, "Vertical",
-  //     $(go.Panel, "Auto",
-  //       { width: 320, height: 60, margin: new go.Margin(2) },
-  //       $(go.Shape, "RoundedRectangle", { fill: "lightyellow", strokeWidth: 0, spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight, parameter1: 10 }),
-  //       $(go.TextBlock, "Square", { margin: new go.Margin(0, 0, 0, 10), alignment: go.Spot.Left }),
-  //       $(go.Shape, "Square", { width: 30, height: 30, fill: "lightgreen", margin: new go.Margin(14, 10, 0, 0), alignment: go.Spot.TopRight })
-  //     )
-  //   )
-  // );
+                myPalette.nodeTemplateMap.add("Rectangle8",
+                  $(go.Node, "Vertical",
+                    $(go.Panel, "Auto",
+                      { width: 320, height: 60, margin: new go.Margin(2) },
+                      $(go.Shape, "RoundedRectangle", { fill: "lightyellow", strokeWidth: 0, spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight, parameter1: 10 }),
+                      $(go.TextBlock, "ACB", { margin: new go.Margin(0, 0, 0, 10), alignment: go.Spot.Left }),
+                      $(go.Shape, "RoundedRectangle", 
+                        { 
+                          width: 35, 
+                          height: 40, 
+                          fill: "Transparent", 
+                          stroke: "black", 
+                          strokeWidth: 1, 
+                          margin: new go.Margin(0, 10, 0, 280) 
+                        },
+                        new go.Binding("stroke", "color")
+                      ),
+                      $(go.Shape, "RoundedRectangle", 
+                        { 
+                          width: 17, 
+                          height: 28, 
+                          fill: "Transparent", 
+                          stroke: "black", 
+                          strokeWidth: 1, 
+                          margin: new go.Margin(0, 10, 0, 280) 
+                        },
+                        new go.Binding("stroke", "color")
+                      ),
+                      $(go.Shape, "Circle", 
+                        { 
+                          width: 3, 
+                          height: 5, 
+                          fill: "black", 
+                          margin: new go.Margin(0, 37, 0, 0), 
+                          alignment: go.Spot.Right
+                        }
+                      ),
+                      $(go.Shape, "Square", 
+                        { 
+                          width: 3, 
+                          height: 5, 
+                          fill: "black", 
+                          margin: new go.Margin(0, 23, 0, 0), 
+                          alignment: go.Spot.Right
+                        }
+                      ),
+                      
+                      $(go.Shape, "Rectangle", 
+                        { 
+                          width: 0, 
+                          height: 11, 
+                          fill: "Transparent", 
+                          stroke: "black", 
+                          strokeWidth: 1, 
+                          margin: new go.Margin(7, 24.5, 23, 0), 
+                          alignment: go.Spot.Right 
+                        },
+                        new go.Binding("stroke", "color")
+                      ),
+                      $(go.Shape, "Rectangle", 
+                        { 
+                          width: 0, 
+                          height: 7, 
+                          fill: "Transparent", 
+                          stroke: "black", 
+                          strokeWidth: 1, 
+                          margin: new go.Margin(21, 24.8, 0, 0), 
+                          alignment: go.Spot.Right 
+                        },
+                        new go.Binding("stroke", "color")
+                      ),
+                      $(go.Shape, "Rectangle", 
+                        { 
+                          width: 0, 
+                          height: 5, 
+                          fill: "Transparent", 
+                          stroke: "black", 
+                          strokeWidth: 1, 
+                          margin: new go.Margin(10, 24.5, 5, 0), 
+                          alignment: go.Spot.Right,
+                          angle: 45
+                        },
+                        new go.Binding("stroke", "color")
+                      ),
+                      $(go.Shape, "Rectangle", 
+                        { 
+                          width: 0, 
+                          height: 5, 
+                          fill: "Transparent", 
+                          stroke: "black", 
+                          strokeWidth: 1, 
+                          margin: new go.Margin(16, 24.5, 5, 0), 
+                          alignment: go.Spot.Right,
+                          angle: -45
+                        },
+                        new go.Binding("stroke", "color")
+                      ),
+                    )))
 
-  // myPalette.nodeTemplateMap.add("Triangle",
-  //   $(go.Node, "Vertical",
-  //     $(go.Panel, "Auto",
-  //       { width: 320, height: 60, margin: new go.Margin(2) },
-  //       $(go.Shape, "RoundedRectangle", { fill: "lightyellow", strokeWidth: 0, spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight, parameter1: 10 }),
-  //       $(go.TextBlock, "Triangle", { margin: new go.Margin(0, 0, 0, 10), alignment: go.Spot.Left }),
-  //       $(go.Shape, "Triangle", { width: 30, height: 30, fill: "lightcoral", margin: new go.Margin(0, 10, 0, 0), alignment: go.Spot.Right })
-  //     )
-  //   )
-  // );
-
-  // myPalette.nodeTemplateMap.add("Diamond",
-  //   $(go.Node, "Vertical",
-  //     $(go.Panel, "Auto",
-  //       { width: 320, height: 60, margin: new go.Margin(2) },
-  //       $(go.Shape, "RoundedRectangle", { fill: "lightyellow", strokeWidth: 0, spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight, parameter1: 10 }),
-  //       $(go.TextBlock, "Diamond", { margin: new go.Margin(0, 0, 0, 10), alignment: go.Spot.Left }),
-  //       $(go.Shape, "Diamond", { width: 30, height: 30, fill: "red", margin: new go.Margin(0, 10, 0, 0), alignment: go.Spot.Right })
-  //     )
-  //   )
-  // );
-  // Define the insideTemplate for the palette
+                    myPalette.nodeTemplateMap.add("Rectangle9",
+                      $(go.Node, "Vertical",
+                        $(go.Panel, "Auto",
+                          { width: 320, height: 60, margin: new go.Margin(2) },
+                          $(go.Shape, "RoundedRectangle", { fill: "lightyellow", strokeWidth: 0, spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight, parameter1: 10 }),
+                          $(go.TextBlock, "Compartment", { margin: new go.Margin(0, 0, 0, 10), alignment: go.Spot.Left }),
+                          $(go.Shape, "Rectangle", 
+                            { 
+                              width: 30, 
+                              height: 45, 
+                              fill: "Transparent", 
+                              stroke: "black", 
+                              strokeWidth: 1, 
+                              margin: new go.Margin(0, 10, 0, 0), 
+                              alignment: go.Spot.Right 
+                            },
+                            new go.Binding("stroke", "color")
+                          ),)))
    // Define the insideTemplate for the palette
    myPalette.nodeTemplateMap.add("InsideTemplate",
     $(go.Node, "Vertical",
       $(go.Panel, "Auto",
         { width: 320, height: 60, margin: new go.Margin(2) },
         $(go.Shape, "RoundedRectangle", { fill: "lightyellow", strokeWidth: 0, spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight, parameter1: 10 }),
-        $(go.TextBlock, "Inside Template", { margin: new go.Margin(0, 0, 0, 10), alignment: go.Spot.Left }),
-        $(go.Panel, "Spot",{ width: 35, height: 35, margin: new go.Margin(0, 10, 0, 0), alignment: go.Spot.Right },
-          $(go.Shape, "Rectangle", { fill: "white", width: 25, height: 25 }),
-          $(go.Shape, "Circle", { fill: "black", width: 8, height: 8, alignment: new go.Spot(0.1, 1), stroke: "white" }),
-          $(go.Shape, "Circle", { fill: "black", width: 8, height: 8, alignment: new go.Spot(0.9, 1), stroke: "white" })
+        $(go.TextBlock, "Base Frame", { margin: new go.Margin(0, 0, 0, 10), alignment: go.Spot.Left }),
+        $(go.Shape, "Rectangle", 
+          { 
+            width: 30, 
+            height: 45, 
+            fill: "Transparent", 
+            stroke: "black", 
+            strokeWidth: 2, 
+            margin: new go.Margin(0, 10, 0, 0), 
+            alignment: go.Spot.Right 
+          },
+          new go.Binding("stroke", "color")
+        ),
+        $(go.Shape, "Rectangle", 
+            { 
+              width: 30, // Increased width to extend the line equally to the left and right
+              height: 1, 
+              fill: "black", 
+              margin: new go.Margin(30, 0, 0, 269), // Adjusted margin to center the line
+              // alignment: go.Spot.Right 
+            }
+        ),
+        $(go.Shape, "RoundedRectangle", 
+          { 
+            width: 3, 
+            height: 3, 
+            fill: "black", 
+            margin: new go.Margin(37, 38, 0, 290) 
+          }
+        ),
+        // Bottom-right corner of Rounded Rectangle
+        $(go.Shape, "RoundedRectangle", 
+          { 
+            width: 3, 
+            height: 3, 
+            fill: "black", 
+            margin: new go.Margin(37, 38, 0, 325) 
+          }
         )
       )
     )
@@ -718,6 +984,9 @@ myPalette.nodeTemplateMap.add("Rectangle4",
     { category: "Rectangle6", key: "Rectangle6" },
     { category: "VerticalLine", key: "VerticalLine" },
     { category: "HorizontalLine", key: "HorizontalLine" },
+    { category: "Rectangle7", key: "Rectangle7" },
+    { category: "Rectangle8", key: "Rectangle8" },
+    { category: "Rectangle9", key: "Rectangle9" },
     
     
 
@@ -728,7 +997,7 @@ myPalette.nodeTemplateMap.add("Rectangle4",
 
 function Palette() {
   return (
-    <div style={{ width: "20vw", height: "97.6vh", backgroundColor: "orange", border: "1px solid black" }}>
+    <div style={{ width: "23vw", height: "97.6vh", backgroundColor: "orange", border: "1px solid black" }}>
       <ReactPalette
         initPalette={initPalette}
         divClassName="palette-component"

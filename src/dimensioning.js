@@ -1,3 +1,4 @@
+//dimensioning.js
 import * as go from 'gojs';
 
 export default class DimensioningLink extends go.Link {
