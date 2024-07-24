@@ -534,15 +534,15 @@ function initDiagram(handleClickOpen) {
     );
   }
 
-  myDiagram.nodeTemplateMap.add("Rectangle", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,200)) );
-  myDiagram.nodeTemplateMap.add("Rectangle2", createNodeTemplate("Rectangle", "SlateBlue", "Cover", new go.Size(300,200)) );
+  myDiagram.nodeTemplateMap.add("Rectangle", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,180)) );
+  myDiagram.nodeTemplateMap.add("Rectangle2", createNodeTemplate("Rectangle", "SlateBlue", "Cover", new go.Size(300,180)) );
   myDiagram.nodeTemplateMap.add("Rectangle3", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,180)) );
-  myDiagram.nodeTemplateMap.add("Rectangle4", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,200)) );
-  myDiagram.nodeTemplateMap.add("Rectangle5", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,200)) );
-  myDiagram.nodeTemplateMap.add("Rectangle6", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,200)) );
-  myDiagram.nodeTemplateMap.add("Rectangle7", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,200)) );
-  myDiagram.nodeTemplateMap.add("Rectangle8", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,200)) );
-  myDiagram.nodeTemplateMap.add("Rectangle9", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,200)) );
+  myDiagram.nodeTemplateMap.add("Rectangle4", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,180)) );
+  myDiagram.nodeTemplateMap.add("Rectangle5", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,180)) );
+  myDiagram.nodeTemplateMap.add("Rectangle6", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,180)) );
+  myDiagram.nodeTemplateMap.add("Rectangle7", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,180)) );
+  myDiagram.nodeTemplateMap.add("Rectangle8", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,180)) );
+  myDiagram.nodeTemplateMap.add("Rectangle9", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300,180)) );
   
   myDiagram.nodeTemplateMap.add("VerticalLine", createVerticalLineTemplate());
   myDiagram.nodeTemplateMap.add("HorizontalLine", createHorizontalLineTemplate());
@@ -778,19 +778,27 @@ myDiagram.addDiagramListener("PartResized", (e) => {
     const partBounds = part.actualBounds;
     const baseFrameBounds = baseFrame.actualBounds;
     if (partBounds.x < baseFrameBounds.x || partBounds.x + partBounds.width > baseFrameBounds.x + baseFrameBounds.width ||
-      partBounds.y < baseFrameBounds.y || partBounds.y + partBounds.height > baseFrameBounds.y + baseFrameBounds.height) {
+      partBounds.y < baseFrameBounds.y || partBounds.y + partBounds.height > baseFrameBounds.y + baseFrameBounds.height-60) {
       e.diagram.currentTool.doCancel();
     }
   }
 });
 
+
 myDiagram.addDiagramListener("ExternalObjectsDropped", function(e) {
-  const newnode = e.diagram.selection.first();
-  if (newnode instanceof go.Node && newnode.data.category === "InsideTemplate") {
     const baseFrame = myDiagram.findNodeForKey(4);
-    if (baseFrame) {
-      // Base frame already exists, show toast notification
-      toast('Only one Base Frame can be added to the diagram', {
+
+  const newnode = e.diagram.selection.first();
+  console.log("ghh", e);
+  console.log("mmjjj",newnode,  myDiagram.model )
+  if (newnode?.$o=== "InsideTemplate") {
+
+      const pt = e.diagram.lastInput.documentPoint;
+      const basePanelData = { key: 4, category: "InsideTemplate", isGroup: true, text: "Base Frame", loc: go.Point.stringify(pt) };
+      myDiagram.startTransaction("add base panel");
+      myDiagram.model.addNodeData(basePanelData);
+      myDiagram.commitTransaction("add base panel");
+      toast('Only one Base Frame can be added ', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -800,21 +808,19 @@ myDiagram.addDiagramListener("ExternalObjectsDropped", function(e) {
         progress: undefined,
         theme: "light",
       });
-      // Base frame already exists, remove the new node
-      myDiagram.remove(newnode);
-    } else {
-      // Add the new base frame
-      const pt = e.diagram.lastInput.documentPoint;
-      const basePanelData = { key: 4, category: "InsideTemplate", isGroup: true, text: "Base Frame", loc: go.Point.stringify(pt) };
-      myDiagram.startTransaction("add base panel");
-      myDiagram.model.addNodeData(basePanelData);
-      myDiagram.commitTransaction("add base panel");
-      // Remove the dragged node as it's now part of the base frame
-      myDiagram.remove(newnode);
-    }
-  } else if (newnode instanceof go.Node && newnode.data.category !== "InsideTemplate") {
-    const baseFrame = myDiagram.findNodeForKey(4);
-    if (!baseFrame) {
+
+  } 
+  else  if (baseFrame.actualBounds.containsPoint(newnode.location)) {
+    // Add the new node to the base frame group
+    myDiagram.model.setDataProperty(newnode.data, "group", baseFrame.key);
+    addDimensionLinks(newnode);
+
+
+    console.log({e})
+
+    // const baseFrame = myDiagram.findNodeForKey(4);
+    // console.log({baseFrame})
+    // if (!baseFrame) {
       // Show notification if no base frame exists
       toast('Add a Base Frame first before adding other shapes', {
         position: "top-right",
@@ -827,13 +833,8 @@ myDiagram.addDiagramListener("ExternalObjectsDropped", function(e) {
         theme: "light",
       });
       // Remove the new node since no base frame exists
-      myDiagram.remove(newnode);
-    } else if (baseFrame.actualBounds.containsPoint(newnode.location)) {
-      // Add the new node to the base frame group
-      myDiagram.model.setDataProperty(newnode.data, "group", baseFrame.key);
-      addDimensionLinks(newnode);
+      // myDiagram.remove(newnode);
     }
-  }
 });
 
   myDiagram.addDiagramListener("ClipboardPasted", function(e) {
