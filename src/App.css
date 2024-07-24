@@ -1,0 +1,152 @@
+.App {
+    text-align: center;
+  }
+  
+  .App-logo {
+    height: 40vmin;
+    pointer-events: none;
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+      animation: App-logo-spin infinite 20s linear;
+    }
+  }
+  
+  .App-header {
+    background-color: #1d4697;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: rgb(214, 0, 0);
+  }
+  
+  .App-link {
+    color: #1d3035;
+  }
+  
+  @keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .main-diagram {
+    width: 100%;
+    /* height: 97%; */
+    background-color: #bcbcbd;
+  }
+  
+  #diagramDiv canvas {
+    outline: none;
+  }
+  
+  #palette canvas {
+    outline: none;
+  }
+  
+  #palette2 canvas {
+    outline: none;
+  }
+  
+  /* Accordion styles */
+  
+  .tabs {
+    overflow: hidden;
+  }
+  
+  #rd1 {
+    display : none;
+  }
+  
+  #rd2 {
+    display : none;
+  }
+  
+  .tab {
+    width: 100%;
+    color: white;
+    overflow: hidden;
+  }
+  
+  .tab-label {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em;
+    background: #1F4963;
+    cursor: pointer;
+  }
+  
+  .tab-label:hover {
+    background: #446cbd;
+  }
+  
+  .tab-label::after {
+    content: "❯";
+    width: 1em;
+    height: 1em;
+    text-align: center;
+    transition: all 0.35s;
+  }
+  
+  .tab-content {
+    max-height: 0;
+    color: #2c3e50;
+    background: white;
+  }
+  
+  .tab-close {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1em;
+    font-size: 0.75em;
+    background: #2c3e50;
+    cursor: pointer;
+  }
+  
+  .tab-close:hover {
+    background: #1a252f;
+  }
+  
+  input:checked + .tab-label {
+    background: #1a252f;
+  }
+  
+  input:checked + .tab-label::after {
+    transform: rotate(90deg);
+  }
+  
+  input:checked ~ .tab-content {
+    max-height: 100vh;
+  }
+  
+  /* Load File */
+  
+  label {
+    cursor: pointer;
+    /* Style as you please, it will become the visible UI component. */
+  }
+  
+  #load-file {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+  }
+  
+  /* No text highlight */
+  
+  .noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }
