@@ -11,11 +11,18 @@ import { useNavigate } from "react-router-dom";
 import FileSaver from "file-saver"; // Use ES module import for file-saver
 import { initDiagram } from "./components/myDiagram";
 import useSysStore from "./stateManage/useManuStore";
-import { useQuery } from "@apollo/client";
-import {GET_DATA} from "./apolloClient/querys"
+import { useMutation, useQuery } from "@apollo/client";
+import {GET_DATA, INSERT_PROJECT} from "./apolloClient/querys"
 
 function Home() {
-  const { loading, error, data } = useQuery(GET_DATA);
+  const { loading, error, data , refetch } = useQuery(GET_DATA);
+  const [insertProject] = useMutation(INSERT_PROJECT);
+  const [proinfo, setProInfo] = useState({
+    category:'',
+    is_baseframe:'',
+    location:''
+  });
+  
   const diagramRef = useRef(null);
   const sys = useSysStore((state) => state.sys);
   const setSys = useSysStore((state) => state.setSys);
@@ -246,7 +253,7 @@ console.log("ddfd", newSysValue);
         <Box flex="1" display="flex" flexDirection="column" position="relative">
           <Box id="diagramDiv" flex="1" bg="#e2e8f0" borderBottom="1px solid black">
             <ReactDiagram
-              initDiagram={() => initDiagram($, myDiagram, toast, handleClickOpen)}
+              initDiagram={() => initDiagram($, myDiagram, toast, handleClickOpen, insertProject)}
               divClassName="main-diagram"
               nodeDataArray={[]}
               style={{ width: '100%', height: '100%' }}

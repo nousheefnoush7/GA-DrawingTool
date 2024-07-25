@@ -4,7 +4,7 @@ import { BatchHttpLink } from "apollo-link-batch-http";
 import { getMainDefinition } from "apollo-utilities";
 
 const httpUri = `http://192.168.7.1:8080/v1/graphql`;
-const wsUri = `wss://192.168.7.1:8080/v1/graphql`;
+const wsUri = `ws://192.168.7.1:8080/v1/graphql`;
 
 const httpLink = new BatchHttpLink({
   uri: httpUri,
@@ -15,7 +15,7 @@ const wsLink = new WebSocketLink({
   uri: wsUri,
   options: {
     reconnect: true,
-    lazy: true, 
+    // lazy: true, 
     connectionParams: {
       headers: { 'x-hasura-admin-secret': 'mDOcYaXY7whVI9asf/+BOvIm0G7vsmFH5NB9tH57J/4=' },
     },

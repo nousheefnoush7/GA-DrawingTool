@@ -1,12 +1,13 @@
 // myDiagram.jsx
 import * as go from 'gojs';
 import DimensioningLink from './dimensioning';
+import { INSERT_PROJECT } from '../apolloClient/querys';
+import { useMutation } from '@apollo/client';
 
-export function initDiagram($, myDiagram, toast, handleClickOpen) {
+export function initDiagram($, myDiagram, toast, handleClickOpen, insertProject) {
 
+  // console.log("sdfkjsadfbasdbfasdf", proinfo)
 
-
-``
   myDiagram.addDiagramListener("Modified", () => {
     var idx = document.title.indexOf("*");
     if (myDiagram.isModified) {
@@ -380,9 +381,15 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
     }
   });
 
-  myDiagram.addDiagramListener("ExternalObjectsDropped", function (e) {
+  const handleShapeInsert = (shape, nodeShape) =>{
+    const baseFrameInfo = nodeShape[0]
+    console.log("sdfsdfsdfsdfsdfwef", shape, nodeShape)
+  }
+
+  myDiagram.addDiagramListener("ExternalObjectsDropped", async function (e) {
     const newnode = e.diagram.selection.first();
     console.log("eee",newnode?.data, myDiagram.model.nodeDataArray);
+    handleShapeInsert(newnode?.data, myDiagram.model.nodeDataArray)
     if (newnode instanceof go.Node && newnode.data.category === "InsideTemplate") {
       const baseFrame = myDiagram.findNodeForKey(4);
       if (baseFrame ) {
@@ -408,6 +415,7 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
         myDiagram.commitTransaction("add base panel");
         // Remove the dragged node as it's now part of the base frame
         myDiagram.remove(newnode);
+        
       }
     } else if (newnode instanceof go.Node && newnode.data.category !== "InsideTemplate") {
       const baseFrame = myDiagram.findNodeForKey(4);

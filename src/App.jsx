@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-d
 import GoJSDiagram from './demo'
 import './App.css'
 import Home from './Home';
+import Testing from './DatabaseTesting';
 
 
 function App() {
@@ -11,6 +12,8 @@ function App() {
     <Router basename='/'>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/test" element={<Testing />} />
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
