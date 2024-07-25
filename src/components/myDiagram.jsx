@@ -1,4 +1,4 @@
-// DiagramInitializer.jsx
+// myDiagram.jsx
 import * as go from 'gojs';
 import DimensioningLink from './dimensioning';
 
@@ -131,6 +131,7 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
       resizeObjectName: "PANEL",
       computesBoundsAfterDrag: true,
       computesBoundsIncludingLocation: true,
+      
     },
       $(go.Panel, "Auto", { name: "PANEL" },
         $(go.Shape, "Rectangle", {
@@ -186,6 +187,7 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
       new go.Binding('extension'),
       new go.Binding('inset'),
       // Make the connecting link line invisible
+      
       $(go.Shape, { stroke: 'gray', strokeWidth: 5 }, new go.Binding('stroke', 'color')),
       $(go.Shape, { fromArrow: 'BackwardOpenTriangle', segmentIndex: 2, stroke: 'gray', scale: 3.0, }, new go.Binding('stroke', 'color')),
       $(go.Shape, { toArrow: 'OpenTriangle', segmentIndex: -3, stroke: 'gray', scale: 3.0 }, new go.Binding('stroke', 'color')),
@@ -309,6 +311,7 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
   myDiagram.mouseDrop = (e) => {
     const target = e.diagram.findPartAt(e.documentPoint);
     const draggedPart = e.diagram.selection.first();
+    const baseFrame = myDiagram.findNodeForKey(4);
 
     if (draggedPart && draggedPart.category === 'InsideTemplate') {
       if (baseFrameAdded) {
@@ -334,7 +337,23 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
         // Allow moving the Base Frame
         return;
       }
-    } else if (!(target instanceof go.Group) || target.category !== 'InsideTemplate') {
+    }
+    else  if (!baseFrame) {
+      // Show notification if no base frame exists
+      e.diagram.currentTool.doCancel();
+
+      toast('Add a Base Frame first before adding other shapes', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+     else if (!(target instanceof go.Group) || target.category !== 'InsideTemplate') {
       e.diagram.currentTool.doCancel();
       toast('You cannot place shapes outside the Base Frame', {
         position: "top-right",
@@ -355,7 +374,7 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
       const partBounds = part.actualBounds;
       const baseFrameBounds = baseFrame.actualBounds;
       if (partBounds.x < baseFrameBounds.x || partBounds.x + partBounds.width > baseFrameBounds.x + baseFrameBounds.width ||
-        partBounds.y < baseFrameBounds.y || partBounds.y + partBounds.height > baseFrameBounds.y + baseFrameBounds.height) {
+        partBounds.y < baseFrameBounds.y || partBounds.y + partBounds.height > baseFrameBounds.y + baseFrameBounds.height-60) {
         e.diagram.currentTool.doCancel();
       }
     }
@@ -366,9 +385,9 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
     console.log("eee",newnode?.data, myDiagram.model.nodeDataArray);
     if (newnode instanceof go.Node && newnode.data.category === "InsideTemplate") {
       const baseFrame = myDiagram.findNodeForKey(4);
-      if (baseFrame) {
+      if (baseFrame ) {
         // Base frame already exists, show toast notification
-        toast('Only one Base Frame can be added to the diagram', {
+        toast('You cannot create a Base Frame inside a Base Frame ', {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -376,7 +395,7 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "light",
+          theme: "dark",
         });
         // Base frame already exists, remove the new node
         myDiagram.remove(newnode);
@@ -393,19 +412,9 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
     } else if (newnode instanceof go.Node && newnode.data.category !== "InsideTemplate") {
       const baseFrame = myDiagram.findNodeForKey(4);
       if (!baseFrame) {
-        // Show notification if no base frame exists
-        toast('Add a Base Frame first before adding other shapes', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        // Remove the new node since no base frame exists
-        myDiagram.remove(newnode);
+       // Remove the new node since no base frame exists
+       myDiagram.remove(newnode);
+       
       } else if (baseFrame.actualBounds.containsPoint(newnode.location)) {
         // Add the new node to the base frame group
         myDiagram.model.setDataProperty(newnode.data, "group", baseFrame.key);

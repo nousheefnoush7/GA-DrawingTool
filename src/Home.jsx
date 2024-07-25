@@ -11,9 +11,11 @@ import { useNavigate } from "react-router-dom";
 import FileSaver from "file-saver"; // Use ES module import for file-saver
 import { initDiagram } from "./components/myDiagram";
 import useSysStore from "./stateManage/useManuStore";
-
+import { useQuery } from "@apollo/client";
+import {GET_DATA} from "./apolloClient/querys"
 
 function Home() {
+  const { loading, error, data } = useQuery(GET_DATA);
   const diagramRef = useRef(null);
   const sys = useSysStore((state) => state.sys);
   const setSys = useSysStore((state) => state.setSys);
@@ -23,7 +25,10 @@ function Home() {
   const resizeHandleSize = 20;
   let history = useNavigate();
   const $ = go.GraphObject.make;
+  useEffect(()=>{
+    console.log("ddd", data);
 
+},[data])
  // Example function to update sys
  const updateSys = (newSysValue) => {
 console.log("ddfd", newSysValue);
