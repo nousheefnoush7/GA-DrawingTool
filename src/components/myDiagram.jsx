@@ -127,7 +127,29 @@ const nodeData=
   { key: 11, text: 'VerticalLine', category: 'VerticalLine', loc: '0 0' },
   { key: 12, text: 'HorizontalLine', category: 'HorizontalLine', loc: '0 0' },
 ];
+  // Adding node templates to the map
+  const addNodeTemplates = () => {
+    const templates = [
+      { category: "Rectangle", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 200) },
+      { category: "Rectangle2", shape: "Rectangle", color: "SlateBlue", text: "Cover", size: new go.Size(300, 200) },
+      { category: "Rectangle3", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 180) },
+      { category: "Rectangle4", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 200) },
+      { category: "Rectangle5", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 200) },
+      { category: "Rectangle6", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 200) },
+      { category: "Rectangle7", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 200) },
+      { category: "Rectangle8", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 200) },
+      { category: "Rectangle9", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 200) }
+    ];
 
+    templates.forEach(template => {
+      myDiagram.nodeTemplateMap.add(template.category, createNodeTemplate(template.shape, template.color, template.text, template.size));
+    });
+
+    myDiagram.nodeTemplateMap.add("VerticalLine", createVerticalLineTemplate());
+    myDiagram.nodeTemplateMap.add("HorizontalLine", createHorizontalLineTemplate());
+  };
+
+  addNodeTemplates();
 
 myDiagram.model = new go.GraphLinksModel(nodeData);
   myDiagram.groupTemplate =
