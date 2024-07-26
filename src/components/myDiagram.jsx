@@ -111,19 +111,45 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
     );
   }
 
-  myDiagram.nodeTemplateMap.add("Rectangle", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 200)));
-  myDiagram.nodeTemplateMap.add("Rectangle2", createNodeTemplate("Rectangle", "SlateBlue", "Cover", new go.Size(300, 200)));
-  myDiagram.nodeTemplateMap.add("Rectangle3", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 180)));
-  myDiagram.nodeTemplateMap.add("Rectangle4", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 200)));
-  myDiagram.nodeTemplateMap.add("Rectangle5", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 200)));
-  myDiagram.nodeTemplateMap.add("Rectangle6", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 200)));
-  myDiagram.nodeTemplateMap.add("Rectangle7", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 200)));
-  myDiagram.nodeTemplateMap.add("Rectangle8", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 200)));
-  myDiagram.nodeTemplateMap.add("Rectangle9", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 200)));
+  // const nodeData = [
+  //   { key: 4, text: "Base Frame", category: "InsideTemplate", isGroup: true },
+  //   { key: 2, category: "Square", group: 4 },
+  //   { key: 5, category: "Rectangle", group: 4 },
+  //   { key: 6, category: "Rectangle2", group: 4 },
+  //   { key: 7, category: "Rectangle3", group: 4 },
+  //   { key: 8, category: "Rectangle4" , group: 4},
+  //   { key: 9, category: "Rectangle5" , group: 4},
+  //   { key: 10, category: "Rectangle6", group: 4 },
+  //   { key: 11, category: "Rectangle7" , group: 4},
+  //   { key: 12, category: "Rectangle8" , group: 4},
+  //   { key: 13, category: "Rectangle9" , group: 4},
+  //   { key: 14, category: "VerticalLine", group: 4 },
+  //   { key: 15, category: "HorizontalLine", group: 4 },
+  // ];
+  // myDiagram.model = new go.GraphLinksModel(nodeData);
+  // Adding node templates to the map
+  const addNodeTemplates = () => {
+    const templates = [
+      { category: "Rectangle", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 200) },
+      { category: "Rectangle2", shape: "Rectangle", color: "SlateBlue", text: "Cover", size: new go.Size(300, 200) },
+      { category: "Rectangle3", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 180) },
+      { category: "Rectangle4", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 200) },
+      { category: "Rectangle5", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 200) },
+      { category: "Rectangle6", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 200) },
+      { category: "Rectangle7", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 200) },
+      { category: "Rectangle8", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 200) },
+      { category: "Rectangle9", shape: "Rectangle", color: "SlateBlue", text: "Rectangle", size: new go.Size(300, 200) }
+    ];
 
-  myDiagram.nodeTemplateMap.add("VerticalLine", createVerticalLineTemplate());
-  myDiagram.nodeTemplateMap.add("HorizontalLine", createHorizontalLineTemplate());
+    templates.forEach(template => {
+      myDiagram.nodeTemplateMap.add(template.category, createNodeTemplate(template.shape, template.color, template.text, template.size));
+    });
 
+    myDiagram.nodeTemplateMap.add("VerticalLine", createVerticalLineTemplate());
+    myDiagram.nodeTemplateMap.add("HorizontalLine", createHorizontalLineTemplate());
+  };
+
+  addNodeTemplates();
 
   myDiagram.groupTemplate =
     $(go.Group, "Vertical", {
@@ -223,6 +249,7 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
 
   function addDimensionLinks(node) {
     const nodeData = node.data;
+    console.log("viki", nodeData)
     if (!nodeData || !nodeData.key) return;
 
     // Exclude horizontal and vertical lines from having dimensions
@@ -234,7 +261,6 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
     const baseFrame = myDiagram.findNodeForKey(4);
     const nodeBounds = node.actualBounds;
     const baseFrameBounds = baseFrame.actualBounds;
-
     const dimensionLinks = [];
 
     if (nodeBounds.top <= baseFrameBounds.top + 10) {
@@ -288,7 +314,10 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
     }
 
     myDiagram.model.addLinkDataCollection(dimensionLinks);
+    myDiagram.model = new go.GraphLinksModel(nodeData, dimensionLinks);
+  
   }
+
 
 
   let baseFrameAdded = false;
@@ -447,16 +476,16 @@ export function initDiagram($, myDiagram, toast, handleClickOpen) {
   });
   myDiagram.initialScale = 0.3;
 
-  //  // Load diagram state from localStorage
-  //   const savedModel = localStorage.getItem("myDiagramModel");
-  //   if (savedModel) {
-  //     myDiagram.model = go.Model.fromJson(savedModel);
-  //   }
+   // Load diagram state from localStorage
+    const savedModel = localStorage.getItem("myDiagramModel");
+    if (savedModel) {
+      myDiagram.model = go.Model.fromJson(savedModel);
+    }
 
-  //   // Save diagram state to localStorage whenever the model changes
-  //   myDiagram.addModelChangedListener(() => {
-  //     localStorage.setItem("myDiagramModel", myDiagram.model.toJson());
-  //   });
+    // Save diagram state to localStorage whenever the model changes
+    myDiagram.addModelChangedListener(() => {
+      localStorage.setItem("myDiagramModel", myDiagram.model.toJson());
+    });
 
 
   return myDiagram;
