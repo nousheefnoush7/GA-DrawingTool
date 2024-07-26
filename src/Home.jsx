@@ -1,108 +1,43 @@
-//Home.jsx
 import React, { useRef, useEffect, useState } from "react";
 import { ReactDiagram } from "gojs-react";
 import * as go from "gojs";
 import Palette from "./Palette";
-import DimensioningLink from "./dimensioning";
 import { toast } from "react-toastify";
 import { Box, Button, Heading, Input } from "@chakra-ui/react";
 import LocationServiceDialog from './components/dialogModel';
 import { useNavigate } from "react-router-dom";
-import FileSaver from "file-saver"; // Use ES module import for file-saver
+import FileSaver from "file-saver";
 import { initDiagram } from "./components/myDiagram";
 import useSysStore from "./stateManage/useManuStore";
-import { useMutation, useQuery } from "@apollo/client";
-import {GET_DATA, INSERT_PROJECT} from "./apolloClient/querys"
+import { useQuery } from "@apollo/client";
+import { GET_DATA } from "./apolloClient/querys";
 
 function Home() {
-  const { loading, error, data , refetch } = useQuery(GET_DATA);
-  const [insertProject] = useMutation(INSERT_PROJECT);
-  const [proinfo, setProInfo] = useState({
-    category:'',
-    is_baseframe:'',
-    location:''
-  });
-  
+  const { loading, error, data } = useQuery(GET_DATA);
   const diagramRef = useRef(null);
   const sys = useSysStore((state) => state.sys);
   const setSys = useSysStore((state) => state.setSys);
-  const jsonData = useSysStore((state) => state.jsonData);
   const setJsonData = useSysStore((state) => state.setJsonData);
-    const [count, setCount] = useState(0);
-  const resizeHandleSize = 20;
-  let history = useNavigate();
+  const [open, setOpen] = React.useState(false);
+  const history = useNavigate();
   const $ = go.GraphObject.make;
-  useEffect(()=>{
-    console.log("ddd", data);
 
-},[data])
- // Example function to update sys
- const updateSys = (newSysValue) => {
-console.log("ddfd", newSysValue);
-  setSys(newSysValue);
-};
-
-  // Example function to update jsonData
-  const updateJsonData = (newJsonData) => {
-    setJsonData(newJsonData);
-  };
-
+  
   useEffect(() => {
     document.title = "SLD Diagram";
-  }, []);
 
-  function onClickHome() {
-    history("./online-simple-circuit");
-  }
-
-
-  const [open, setOpen] = React.useState(false);
-  function onClickHome() {
-    history("./online-simple-circuit");
-  }
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  useEffect(() => {
-    const diagram = diagramRef.current;
-    if (diagram) {
-      const basePanelData = diagram.model.nodeDataArray.find(node => node.category === "InsideTemplate");
-      if (!basePanelData) {
-        const pt = diagram.documentBounds.center;
-        const initialBasePanelData = { key: 4, category: "InsideTemplate", isGroup: true, text: "Base Frame", loc: go.Point.stringify(pt) };
-        diagram.model.addNodeData(initialBasePanelData);
-      }
-      console.log("savvv", sys);
-      // diagram.nodes.each(node => {
-      //   if (node.data && node.data.category !== "InsideTemplate") {
-      //     addDimensionLinks(node);
-      //   }
-      // });
-    }
-  }, []);
-  useEffect(() => {
-    // Prompt confirmation when reload page is triggered
-    window.onbeforeunload = () => { return "" };
-
-    // Unmount the window.onbeforeunload event
     return () => { window.onbeforeunload = null };
   }, []);
 
-  
-    const resizeHandleTemplate = $(
-      go.Shape,
-      "Square",
-      {
-        desiredSize: new go.Size(resizeHandleSize, resizeHandleSize),
-        fill: "lightblue",
-        cursor: "se-resize"
-      }
-    );
+  const resizeHandleTemplate = $(
+    go.Shape,
+    "Square",
+    {
+      desiredSize: new go.Size(20, 20),
+      fill: "lightblue",
+      cursor: "se-resize"
+    }
+  );
 
   const myDiagram = $(go.Diagram, {
     'undoManager.isEnabled': true,
@@ -116,31 +51,28 @@ console.log("ddfd", newSysValue);
     'toolManager.mouseWheelBehavior': go.WheelMode.Zoom,
     'draggingTool.isGridSnapEnabled': true,
     'resizingTool.isGridSnapEnabled': true,
-    'resizingTool.handleArchetype': resizeHandleTemplate // Set the resize handle template
+    'resizingTool.handleArchetype': resizeHandleTemplate
   });
 
-  async function newFile() {
-    let isConfirm = window.confirm(
-      "All unsaved changes will be lost\nProceed to create a new file?"
-    );
-    if (isConfirm) {
+  const newFile = async () => {
+    if (window.confirm("All unsaved changes will be lost\nProceed to create a new file?")) {
       const newData = {};
       myDiagram.model = go.Model.fromJson(newData);
+      setSys(0);
     }
-    setSys(0);
-  }
+  };
 
-  async function save() {
-    var data = myDiagram.model.toJson();
+  const save = async () => {
+    const data = myDiagram.model.toJson();
     console.log("save", data);
-    updateJsonData(data);
+    setJsonData(data);
     myDiagram.isModified = false;
-    var blob = new Blob([data], { type: "application/json" });
+    const blob = new Blob([data], { type: "application/json" });
     FileSaver.saveAs(blob, "diagram.json");
     setSys(0);
-  }
+  };
 
-  async function load(Data) {
+  const load = async (Data) => {
     console.log("Loading Data: ", Data);
     try {
       const model = go.Model.fromJson(Data);
@@ -150,7 +82,7 @@ console.log("ddfd", newSysValue);
       toast.error("Failed to load diagram data");
     }
     setSys(0);
-  }
+  };
 
   const loadFile = (e) => {
     e.preventDefault();
@@ -171,7 +103,6 @@ console.log("ddfd", newSysValue);
     };
     reader.readAsText(file);
   };
-  
 
   return (
     <div style={{ display: "flex", height: "100vh", width: "100%" }}>
@@ -197,7 +128,7 @@ console.log("ddfd", newSysValue);
           alignItems="center"
           bg="slategray"
         >
-          <Box mr="4" ml="4" cursor="pointer" transition="ease-in-out" transitionDuration="150ms" onClick={onClickHome}>
+          <Box mr="4" ml="4" cursor="pointer" transition="ease-in-out" transitionDuration="150ms" onClick={() => history("./online-simple-circuit")}>
             SLD
           </Box>
           <Button
@@ -211,7 +142,7 @@ console.log("ddfd", newSysValue);
             cursor="pointer"
             bg="transparent"
             textAlign="center"
-            onClick={() =>  newFile()}
+            onClick={newFile}
           >
             New
           </Button>
@@ -245,7 +176,7 @@ console.log("ddfd", newSysValue);
             cursor="pointer"
             bg="transparent"
             textAlign="center"
-            onClick={() =>  save()}
+            onClick={save}
           >
             Save
           </Button>
@@ -253,7 +184,7 @@ console.log("ddfd", newSysValue);
         <Box flex="1" display="flex" flexDirection="column" position="relative">
           <Box id="diagramDiv" flex="1" bg="#e2e8f0" borderBottom="1px solid black">
             <ReactDiagram
-              initDiagram={() => initDiagram($, myDiagram, toast, handleClickOpen, insertProject)}
+              initDiagram={() => initDiagram($, myDiagram, toast, () => setOpen(true))}
               divClassName="main-diagram"
               nodeDataArray={[]}
               style={{ width: '100%', height: '100%' }}
@@ -270,7 +201,7 @@ console.log("ddfd", newSysValue);
             bottom="0"
             width="100%"
           >
-            <Box display="flex" flexDirection="row" justifyContent="space-between" >
+            <Box display="flex" flexDirection="row" justifyContent="space-between">
               <Box display="flex" alignItems="center">
                 <Box display="flex" mr="2">
                   <Heading as="h1" fontSize="sm" mr="2" px="2" border="1px solid black" bg="white" borderRadius="md">
@@ -295,10 +226,10 @@ console.log("ddfd", newSysValue);
             </Box>
           </Box>
         </Box>
-        <LocationServiceDialog isOpen={open} onClose={handleClose} />
+        <LocationServiceDialog isOpen={open} onClose={() => setOpen(false)} />
       </Box>
     </div>
   );
-};
+}
 
 export default Home;

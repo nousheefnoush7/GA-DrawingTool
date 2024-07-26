@@ -111,21 +111,25 @@ export function initDiagram($, myDiagram, toast, handleClickOpen, insertProject)
       new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify)
     );
   }
+const nodeData= 
 
-  myDiagram.nodeTemplateMap.add("Rectangle", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 200)));
-  myDiagram.nodeTemplateMap.add("Rectangle2", createNodeTemplate("Rectangle", "SlateBlue", "Cover", new go.Size(300, 200)));
-  myDiagram.nodeTemplateMap.add("Rectangle3", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 180)));
-  myDiagram.nodeTemplateMap.add("Rectangle4", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 200)));
-  myDiagram.nodeTemplateMap.add("Rectangle5", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 200)));
-  myDiagram.nodeTemplateMap.add("Rectangle6", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 200)));
-  myDiagram.nodeTemplateMap.add("Rectangle7", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 200)));
-  myDiagram.nodeTemplateMap.add("Rectangle8", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 200)));
-  myDiagram.nodeTemplateMap.add("Rectangle9", createNodeTemplate("Rectangle", "SlateBlue", "Rectangle", new go.Size(300, 200)));
+[
+  { key: 1, text: 'Rectangle', category: 'Rectangle', loc: '0 0' },
+  { key: 2, text: 'Rectangle2', category: 'Rectangle2', loc: '100 0' },
+  { key: 3, text: 'Rectangle3', category: 'Rectangle3', loc: '200 0' },
+  { key: 4, text: 'Base Frame', category: 'InsideTemplate', loc: '0 0', isGroup: true },
+  { key: 5, text: 'Rectangle4', category: 'Rectangle4', loc: '300 0', group: 4 },
+  { key: 6, text: 'Rectangle5', category: 'Rectangle5', loc: '400 0', group: 4 },
+  { key: 7, text: 'Rectangle6', category: 'Rectangle6', loc: '500 0', group: 4 },
+  { key: 8, text: 'Rectangle7', category: 'Rectangle7', loc: '600 0', group: 4 },
+  { key: 9, text: 'Rectangle8', category: 'Rectangle8', loc: '700 0', group: 4 },
+  { key: 10, text: 'Rectangle9', category: 'Rectangle9', loc: '800 0', group: 4 },
+  { key: 11, text: 'VerticalLine', category: 'VerticalLine', loc: '0 0' },
+  { key: 12, text: 'HorizontalLine', category: 'HorizontalLine', loc: '0 0' },
+];
 
-  myDiagram.nodeTemplateMap.add("VerticalLine", createVerticalLineTemplate());
-  myDiagram.nodeTemplateMap.add("HorizontalLine", createHorizontalLineTemplate());
 
-
+myDiagram.model = new go.GraphLinksModel(nodeData);
   myDiagram.groupTemplate =
     $(go.Group, "Vertical", {
       resizable: true,
